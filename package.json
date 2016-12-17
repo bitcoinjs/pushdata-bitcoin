@@ -1,7 +1,7 @@
 {
   "name": "pushdata-bitcoin",
   "version": "1.0.0",
-  "description": "encode/decode value as bitcoin PUSH_DATA integer",
+  "description": "encode/decode value as bitcoin OP_PUSHDATA integer",
   "keywords": [
     "push",
     "encode",
