@@ -7,7 +7,11 @@ function encodingLength (i) {
   : 5
 }
 
-function encode (buffer, number, offset) {
+function encode (number, buffer, offset) {
+  if (!buffer) buffer = Buffer.alloc(encodingLength(number))
+  if (!Buffer.isBuffer(buffer)) throw new TypeError('buffer must be a Buffer instance')
+  if (!offset) offset = 0
+
   var size = encodingLength(number)
 
   // ~6 bit
@@ -30,44 +34,38 @@ function encode (buffer, number, offset) {
     buffer.writeUInt32LE(number, offset + 1)
   }
 
-  return size
+  encode.bytes = size
+  return buffer
 }
 
 function decode (buffer, offset) {
   var opcode = buffer.readUInt8(offset)
-  var number, size
+  var number
 
   // ~6 bit
   if (opcode < OPS.OP_PUSHDATA1) {
     number = opcode
-    size = 1
+    decode.bytes = 1
 
   // 8 bit
   } else if (opcode === OPS.OP_PUSHDATA1) {
-    if (offset + 2 > buffer.length) return null
     number = buffer.readUInt8(offset + 1)
-    size = 2
+    decode.bytes = 2
 
   // 16 bit
   } else if (opcode === OPS.OP_PUSHDATA2) {
-    if (offset + 3 > buffer.length) return null
     number = buffer.readUInt16LE(offset + 1)
-    size = 3
+    decode.bytes = 3
 
   // 32 bit
   } else {
-    if (offset + 5 > buffer.length) return null
     if (opcode !== OPS.OP_PUSHDATA4) throw new Error('Unexpected opcode')
 
     number = buffer.readUInt32LE(offset + 1)
-    size = 5
+    decode.bytes = 5
   }
 
-  return {
-    opcode: opcode,
-    number: number,
-    size: size
-  }
+  return number
 }
 
 module.exports = {
