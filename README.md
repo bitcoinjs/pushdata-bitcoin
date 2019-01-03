@@ -10,10 +10,10 @@ Encode/decode value as bitcoin `OP_PUSHDATA` integer
 ## Example
 
 ``` javascript
-var pushdata = require('pushdata-bitcoin')
+const pushdata = require('pushdata-bitcoin')
 
-var i = 120
-var buffer = new Buffer(pushdata.encodingLength(i))
+let i = 120
+let buffer = Buffer.alloc(pushdata.encodingLength(i))
 
 pushdata.encode(buffer, i)
 ```

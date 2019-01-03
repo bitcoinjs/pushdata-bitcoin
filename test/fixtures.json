@@ -57,7 +57,10 @@
     {
       "description": "OP_PUSHDATA4, no size",
       "hex": "4e"
+    },
+    {
+      "description": "invalid PUSHDATA OP, no size",
+      "hex": "4fffffffff"
     }
   ]
 }
-
