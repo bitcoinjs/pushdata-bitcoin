@@ -2,12 +2,13 @@ var OPS = require('bitcoin-ops')
 
 function encodingLength (i) {
   return i < OPS.OP_PUSHDATA1 ? 1
-  : i <= 0xff ? 2
-  : i <= 0xffff ? 3
-  : 5
+    : i <= 0xff ? 2
+      : i <= 0xffff ? 3
+        : 5
 }
 
 function encode (buffer, number, offset) {
+  offset = offset || 0
   var size = encodingLength(number)
 
   // ~6 bit
